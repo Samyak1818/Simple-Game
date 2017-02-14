@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My First Game</title>
+		<style>
+			#mycanvas
+			{
+				border: 5px solid green;
+				background: url("http://cdn.wallpapersafari.com/9/98/6cqPKD.jpg");
+				background-size: cover;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<canvas id = "mycanvas" width = "500px" height = "400px"
+
+        <canvas/>
+        <script> 
+        	var canvas = document.getElementById('mycanvas');
+        	console.log(canvas);
+        	var pen = canvas.getContext('2d');
+
+        	pen.fillStyle = '(war.jpg)';
+        	pen.fillRect(100,100,100,100);
+
+        	function init()
+        	{
+        		GAME_WIDTH = 500;
+        		GAME_HEIGHT= 400;
+        		GAME_RUNNING= true;
+        		//Initialise the objects
+        		enemy1= 
+        		{
+
+        			x : 150 ,
+        			y : 300 ,
+        			w : 50 ,
+        			h : 50 ,
+        			speedY : 5,
+        		};
+				enemy2={
+
+        			x : 220 ,
+        			y : 200 ,
+        			w : 50 ,
+        			h : 50 ,
+        			speedY : 5,
+        		};
+				enemy3={
+
+        			x : 300 ,
+        			y : 100 ,
+        			w : 50 ,
+        			h : 50 ,
+        			speedY : 5,
+        		};
+
+        		player= 
+        		{
+        			x : 0 ,
+        			y : 220 ,
+        			w : 50 ,
+        			h : 50 ,
+        			speedX : 0,
+        		};
+
+        		goal= 
+        		{
+        			x : 450 ,
+        			y : 220 ,
+        			w : 50 ,
+        			h : 50 ,
+        	
+        		};
+				
+				
+        		canvas.addEventListener('mousedown', function()
+        		{
+        			player.speedX = 5;
+        		});
+
+        		canvas.addEventListener('mouseup', function()
+        		{
+        			player.speedX = 0;
+        		});
+        		
+        		document.addEventListener('keydown', function(e)
+        		{	
+        			console.log(e);
+        			if(e.key=='ArrowLeft')
+        			{
+        				player.x -= 10;
+        			}
+        			if(e.key=='ArrowRight')
+        			{
+        				player.x += 10;
+        			}
+        			if(e.key=='ArrowUp')
+        			{
+        				player.y -= 10;
+        			}
+        			if(e.key=='ArrowDown')
+        			{
+        				player.y += 10;
+        			}
+        		});	
+        	}
+        	
+			
+			  function isColliding(r1,r2)
+        	  {
+        		 var x_axis = Math.abs(r1.x - r2.x) <= r1.w;
+        		 var y_axis = Math.abs(r1.y - r2.y) <= r1.h;
+
+        		return x_axis && y_axis;
+        	}
+		 	
+        	function draw()
+        	{
+        		pen.clearRect(0,0, GAME_WIDTH, GAME_HEIGHT);
+        		pen.fillRect(enemy1.x,enemy1.y,enemy1.w,enemy1.h);
+				pen.fillRect(enemy2.x,enemy2.y,enemy2.w,enemy2.h);
+				pen.fillRect(enemy3.x,enemy3.y,enemy3.w,enemy3.h);
+        		pen.fillRect(player.x,player.y,player.w,player.h);
+        		pen.fillRect(goal.x,goal.y,goal.w,goal.h);
+			
+        	}
+        	function update()
+        	{
+        		enemy1.y += enemy1.speedY;
+        		if(enemy1.y >= (GAME_HEIGHT - enemy1.h) || (enemy1.y <= 0))
+        		{
+        			enemy1.speedY *= -1;
+        		}
+				enemy2.y += enemy2.speedY;
+        		if(enemy2.y >= (GAME_HEIGHT - enemy2.h) || (enemy2.y <= 0))
+        		{
+        			enemy2.speedY *= -1;
+        		}
+				enemy3.y += enemy3.speedY;
+        		if(enemy3.y >= (GAME_HEIGHT - enemy3.h) || (enemy3.y <= 0))
+        		{
+        			enemy3.speedY *= -1;
+        		}
+        		player.x += player.speedX;
+        		
+				 if(isColliding(player, enemy1))
+        		  {
+        			 alert("GAME OVER");
+        			 GAME_RUNNING = false;
+        	      }
+				  if(isColliding(player, enemy2))
+        		  {
+        			 alert("GAME OVER");
+        			 GAME_RUNNING = false;
+        	      }
+				  if(isColliding(player, enemy3))
+        		  {
+        			 alert("GAME OVER");
+        			 GAME_RUNNING = false;
+        	      }
+				  
+				  
+        		if(isColliding(player, goal))
+        		{
+        			alert("GAME WON");
+        			GAME_RUNNING = false;
+        		}
+        	}
+        	//GAME LOOP
+         	function render()
+         	{ 
+         		console.log("in render");
+         		draw();
+         		update();
+         		if(GAME_RUNNING==true)
+         		{
+         			window.requestAnimationFrame(render);
+
+         		}
+         		else
+         		{	
+         			startGame();
+         		}
+ 
+          	}
+
+         	function startGame()
+         	{
+        		init();
+        		render();
+        	}
+        	startGame();
+
+        </script>
+	
+	</body>
+
+</html>
